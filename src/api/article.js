@@ -3,7 +3,7 @@ import request from '../utils/request' // 引入封装得axios
 // 获取文章列表
 export function getArticleList (data) {
     return request({
-        url: '/articleList',
+        url: '/articles',
         method: 'POST',
         data
     })

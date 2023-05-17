@@ -44,7 +44,7 @@ export default {
       },
       paginate: {
         page: 1,
-        pageSize: 5
+        page_size: 5
       }
     }
   },
