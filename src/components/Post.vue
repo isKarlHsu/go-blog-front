@@ -2,7 +2,7 @@
   <div class="post-card">
     <div class="post" v-for="(item, key) in this.posts">
       <div class="post-year">{{ key }}</div>
-      <div class="post" v-for="post in item" @click=articleDetail(post.article_id)>
+      <div style="cursor:pointer"  class="post" v-for="post in item" @click=articleDetail(post.article_id)>
         <div class="post-title">{{ post.title }}</div>
       </div>
       <el-divider />
@@ -31,7 +31,7 @@ export default {
       })
     },
     articleDetail(val) {
-      router.push('./ArticleDetail/' + val)
+      router.push('/article/' + val)
     }
   }
 }

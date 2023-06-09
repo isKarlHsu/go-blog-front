@@ -1,16 +1,20 @@
 <template>
   <div class="article-card" v-if="this.article_card_show">
-    <div class="article" v-for="item in this.articles" @click=articleDetail(item.article_id)>
-      <div class="article-title">{{ item.title }}</div>
+    <div class="article" v-for="item in this.articles">
+      <div style="cursor:pointer"  class="article-title" @click=articleDetail(item.article_id)>{{ item.title }}</div>
       <div class="article-abstract">{{ item.abstract }}</div>
       <!--      <div class="article-content">{{item.content}}</div>-->
-      <div class="article-time">
-        <el-icon color="#464646" size="18">
-          <Calendar/>
-        </el-icon>
-        {{ item.created_at }}
+      <div class="article-foot">
+        <div class="article-time">
+          <el-icon color="#464646" size="12">
+            <Calendar/>
+          </el-icon>
+          {{ item.created_at }}
+        </div>
+        <div class="article-tag">
+          <a v-for="tag in item.article_tag" @click=articleTag(tag.tag.name)>#{{ tag.tag.name }}</a>
+        </div>
       </div>
-      <!--      <div class="article-tag">{{item.tag}}</div>-->
       <el-divider />
     </div>
     <div class="example-pagination-block">
@@ -44,7 +48,8 @@ export default {
       },
       paginate: {
         page: 1,
-        page_size: 5
+        page_size: 5,
+        tag: ''
       }
     }
   },
@@ -65,13 +70,21 @@ export default {
     },
     handleCurrentChange(val){
       this.paginate.page = val
-      let url = location.pathname + '?page=' + val
-      history.pushState({url: url, title: document.title}, document.title, url)
+      this.$router.push(`${this.$route.path}?page=` + val)
+      // let url = location.pathname + '?page=' + val
+      // history.pushState({url: url, title: document.title}, document.title, url)
       this.getList()
     },
     articleDetail(val){
       console.log(val)
-      router.push('./ArticleDetail/' + val)
+      router.push('/article/' + val)
+    },
+    articleTag(val){
+      this.paginate.tag = val
+      console.log(this.$route)
+      this.$route.query.tag = val
+      // this.$router.push(`${this.$route.path}?tag=` + val)
+      this.getList()
     }
   }
 }
@@ -92,7 +105,10 @@ export default {
 .article-abstract {
   font-size: 16px;
 }
-
+.article-foot{
+  display: flex;
+  margin: 5px;
+}
 .article-time {
   font-size: 14px;
   line-height: 30px;
@@ -100,8 +116,12 @@ export default {
 }
 
 .article-tag {
+  display: flex;
   font-size: 14px;
   color: #9f9f9f;
+}
+.article-tag >a{
+  margin: 5px;
 }
 
 </style>
